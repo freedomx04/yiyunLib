@@ -1,4 +1,4 @@
-package itec.util;
+package org.utils;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

@@ -1,4 +1,4 @@
-package org.tsaikd.java.utils;
+package org.utils;
 
 import java.io.BufferedReader;
 import java.io.InputStream;

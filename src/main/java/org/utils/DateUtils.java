@@ -1,4 +1,4 @@
-package itec.patent.common;
+package org.utils;
 
 import java.text.DateFormat;
 import java.text.ParseException;

@@ -1,4 +1,4 @@
-package itec.utils;
+package org.utils;
 
 import java.text.DecimalFormat;
 

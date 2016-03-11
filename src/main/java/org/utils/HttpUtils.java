@@ -1,4 +1,4 @@
-package itec.util;
+package org.utils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -7,13 +7,10 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -24,30 +21,20 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.tsaikd.java.utils.WebClient;
 
-public class HttpUtilsWithSession {
-    
-    static Log log = LogFactory.getLog(HttpUtilsWithSession.class);
-    
-    private Set<String> cookies = new TreeSet<String>();
+public class HttpUtils {
 
-    public String getResponseAsString(String url) throws IOException {
+    static Log log = LogFactory.getLog(HttpUtils.class);
+
+    public static String getResponseAsString(String url) throws IOException {
         String ret = "";
         CloseableHttpClient client = WebClient.newHttpClient();
         HttpGet method = new HttpGet(url);
-        for (String cookie : cookies) {
-            method.addHeader("Cookie", cookie);
-        }
         
         HttpResponse response = client.execute(method);
         HttpEntity entity = response.getEntity();
         if (response.getStatusLine().getStatusCode() < 400) {
             ret = EntityUtils.toString(entity, "UTF-8");
-            Header[] headers = response.getHeaders("Set-Cookie");
-            for (Header h : headers) {
-                cookies.add(h.getValue());
-            }
         } else {
             EntityUtils.consume(entity);
         }
@@ -55,22 +42,15 @@ public class HttpUtilsWithSession {
         return ret;
     }
 
-    public byte[] getResponseBody(String url) throws IOException {
+    public static byte[] getResponseBody(String url) throws IOException {
         byte[] content = new byte[0];
         CloseableHttpClient client = WebClient.newHttpClient();
         HttpGet method = new HttpGet(url);
-        for (String cookie : cookies) {
-            method.addHeader("Cookie", cookie);
-        }
         
         HttpResponse response = client.execute(method);
         HttpEntity entity = response.getEntity();
         if (response.getStatusLine().getStatusCode() < 400) {
             content = EntityUtils.toByteArray(entity);
-            Header[] headers = response.getHeaders("Set-Cookie");
-            for (Header h : headers) {
-                cookies.add(h.getValue());
-            }
         } else {
             EntityUtils.consume(entity);
         }
@@ -78,14 +58,10 @@ public class HttpUtilsWithSession {
         return content;
     }
 
-    public String getResponseAsString(String url, HashMap<String, String> map) throws IOException {
+    public static String getResponseAsString(String url, HashMap<String, String> map) throws IOException {
         String ret = "";
         CloseableHttpClient client = WebClient.newHttpClient();
         HttpPost method = new HttpPost(url);
-        for (String cookie : cookies) {
-            method.addHeader("Cookie", cookie);
-        }
-
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         for (String key : map.keySet()) {
             params.add(new BasicNameValuePair(key, map.get(key)));
@@ -103,14 +79,11 @@ public class HttpUtilsWithSession {
         return ret;
     }
     
-    public String getResponseAsString(String url, HashMap<String, String> map, HashMap<String, String> headers) throws IOException {
+    public static String getResponseAsString(String url, HashMap<String, String> map, HashMap<String, String> headers) throws IOException {
         String ret = "";
         CloseableHttpClient client = WebClient.newHttpClient();
         HttpPost method = new HttpPost(url);
-        for (String cookie : cookies) {
-            method.addHeader("Cookie", cookie);
-        }
-
+        
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         for (String key : map.keySet()) {
             params.add(new BasicNameValuePair(key, map.get(key)));
@@ -131,18 +104,14 @@ public class HttpUtilsWithSession {
         client.close();
         return ret;
     }
-    
-    public boolean downloadFile(String url, File output) throws IOException {
+
+    public static boolean downloadFile(String url, File output) throws IOException {
         boolean ret = false;
         
-        FileUtil.sureDirExists(output, true);
+        FileUtils.sureDirExists(output, true);
         
         CloseableHttpClient client = WebClient.newHttpClient();
         HttpGet method = new HttpGet(url);
-        for (String cookie : cookies) {
-            method.addHeader("Cookie", cookie);
-        }
-        
         CloseableHttpResponse response = client.execute(method);
         HttpEntity entity = response.getEntity();
         if (response.getStatusLine().getStatusCode() < 400) {

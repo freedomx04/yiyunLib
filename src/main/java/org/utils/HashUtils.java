@@ -1,4 +1,4 @@
-package org.tsaikd.java.utils;
+package org.utils;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
