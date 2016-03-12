@@ -1,0 +1,51 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'maven'
+
+group = 'org.yiyun.java'
+archivesBaseName="yiyunlib"
+version = '0.0.1'
+sourceCompatibility = 1.8		// …Ë÷√ JDK ∞Ê±æ
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'Gradle Quickstart',
+                   'Implementation-Version': version
+    }
+}
+
+repositories {
+    mavenCentral()			
+	maven {					
+		url "http://repo1.maven.org/maven2"
+	}
+}
+
+dependencies {
+	compile 'log4j:log4j:1.2.17'
+	compile 'commons-logging:commons-logging:1.2'
+	compile 'commons-cli:commons-cli:1.2'
+	compile 'commons-codec:commons-codec:1.10'
+	compile 'commons-io:commons-io:2.4'
+	compile 'org.apache.commons:commons-compress:1.8.1'
+	compile 'com.googlecode.htmlcompressor:htmlcompressor:1.5.2'
+	compile 'org.apache.httpcomponents:httpcore:4.3.3'
+	compile 'org.apache.httpcomponents:httpclient:4.3.6'
+}
+
+test {
+    systemProperties 'property': 'value'
+}
+
+uploadArchives {
+    repositories {
+       flatDir {
+           dirs 'repos'
+       }
+    }
+}
+
+task taskJar(type: Jar, dependsOn: compileJava) {
+    from 'build/classes'
+    destinationDir = file('build/libs')
+}

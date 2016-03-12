@@ -349,5 +349,4 @@ public class ConfigUtils {
 			return false;
 		}
 	}
-
 }
